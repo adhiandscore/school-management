@@ -17,6 +17,7 @@ class Kelas extends Model
     // Relasi dengan Guru
     public function gurus()
     {
-        return $this->belongsToMany(Guru::class, 'kelas_guru'); // Misalkan ada tabel pivot kelas_guru
+        return $this->belongsToMany(Guru::class, 'kelas_guru'); 
     }
+
 }

@@ -11,6 +11,7 @@ class KelasController extends Controller
     public function index()
     {
         $kelas = Kelas::all(); // Ambil semua data kelas
+        dd($kelas); // Tampilkan data untuk debugging
         return view('kelas.index', compact('kelas')); // Kirim ke view
     }
 

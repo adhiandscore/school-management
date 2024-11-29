@@ -28,13 +28,13 @@ class SiswaController extends Controller
     }
     
     public function edit(Siswa $siswa) {
-        $kelas = Kelas::all();
-        return view('siswa.edit', compact('siswa', 'kelas'));
+        $siswa = Siswa::all();
+        return view('edit.siswaEdit', compact('siswa', 'kelas'));
     }
     
     public function update(Request $request, Siswa $siswa) {
         $siswa->update($request->all());
-        return redirect()->route('siswa.index');
+        return redirect()->route('siswa.index')->with('success', 'data siswa berhasil diupdate!');
     }
     
     public function destroy(Siswa $siswa) {

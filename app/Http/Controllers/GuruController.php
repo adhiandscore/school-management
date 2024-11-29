@@ -9,15 +9,10 @@ class GuruController extends Controller
 {
     // Tampilkan daftar guru
     public function index()
-    {
-        $gurus = Guru::all();
-
-        if ($gurus->isEmpty()) {
-            return redirect()->route('guru.guruEmptyHandler');
-        }
-
-        return view('guru.index', compact('gurus'));
-    }
+{
+    $gurus = Guru::all(); // Data guru
+    return view('guru.index', compact('gurus'));
+}
 
     public function edit(Guru $guru)
     {
