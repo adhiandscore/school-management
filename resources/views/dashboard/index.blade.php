@@ -29,11 +29,10 @@
     </style>
 </head>
 <body>
-    <h1>Dashboard</h1>
 
     <div class="container">
-        <h1>Dashboard</h1>
-        <p>Selamat datang di dashboard Anda. Gunakan tombol di bawah ini untuk navigasi ke fitur lainnya:</p>
+        <h1>Dashboard Sistem Manajemen Sekolah</h1>
+        <p>Selamat datang di dashboard Dashboard Sistem Manajemen Sekolah</p>
 
         <!-- Button ke Form Input Data -->
         <a href="{{ route('form.index') }}" class="btn">Form Input Data</a>

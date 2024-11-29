@@ -9,8 +9,11 @@ class Guru extends Model
     protected $fillable = ['nama'];
 
     // Relasi dengan Kelas
-    public function kelass()
+    public function gurus()
     {
-        return $this->belongsToMany(Kelas::class, 'kelas_guru'); // Misalkan ada tabel pivot kelas_guru
+        return $this->belongsToMany(Guru::class, 'kelas_guru');
     }
+
+
+
 }
