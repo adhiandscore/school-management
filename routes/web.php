@@ -9,8 +9,8 @@ use App\Http\Controllers\FormController;
 require __DIR__ . '/auth.php';
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa.index');
-
+Route::get('siswa', [SiswaController::class, 'index'])->name('siswa.index');
+Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit'])->name('siswa.edit');
 Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
 
 Route::resource('guru', GuruController::class);
@@ -34,14 +34,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/form/guru', [FormController::class, 'storeGuru'])->name('form.guru.store');
 
     // terima data dari index
-    Route::get('/siswa/{id}/edit', [SiswaController::class, 'edit'])->name('edit.siswaEdit');
+
     //update data siswa
-    Route::put('/edit/siswa{id}', [SiswaController::class, 'update'])->name('edit.siswaEdit');
+    Route::put('/siswa/update/{id}', [SiswaController::class, 'update'])->name('siswa.update');
 
     Route::put('/kelas/{id}', [KelasController::class, 'update'])->name('kelas.update');
-
-// update data
-// Rute untuk halaman edit siswa
-Route::put('/guru/{id}', [GuruController::class, 'update'])->name('guru.update');
+    // update data
+    // Rute untuk halaman edit siswa
+    Route::put('/guru/{id}', [GuruController::class, 'update'])->name('guru.update');
 });
 

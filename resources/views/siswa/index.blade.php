@@ -51,12 +51,9 @@
                                         <td class="px-6 py-4 text-gray-800">{{ $s->nis }}</td>
                                         <td class="px-6 py-4 text-gray-800">{{ $s->kelas->nama_kelas }}</td>
                                         <td class="px-6 py-4 text-center">
-                                            <!-- Formulir untuk Edit -->
+                                            <!-- Link untuk Edit -->
+                                            <a href="{{ route('siswa.edit', $s->id) }}" onclick="console.log('{{ $s->id }}')" class="btn btn-warning">Edit</a>
 
-                                            
-                                                <a href="{{ url('edit/siswa?id=' . $s->id) }}" class="btn btn-warning"> Edit </a>
-                                            
-                                            
                                             <!-- Formulir untuk Hapus -->
                                             <form action="#" method="POST" class="inline-block"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
@@ -70,6 +67,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
+
 
                             </tbody>
                         </table>
