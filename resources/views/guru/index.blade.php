@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-semibold mb-6 text-gray-900">Daftar Guru</h1>
+    <h1 class="text-3xl text-white font-bold mb-4">Daftar Guru</h1>
 
     <!-- Tampilkan pesan sukses -->
     @if(session('success'))
@@ -28,7 +28,7 @@
                         <td class="px-4 py-2 text-gray-900">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2 text-gray-900">{{ $guru->nama ?? '' }}</td>
                         <td class="px-4 py-2 text-gray-900">
-                            @if($guru->kelases->isNotEmpty())
+                            @if($guru->gurus->isNotEmpty())
                                 @foreach($guru->kelases as $kelas)
                                     {{ $kelas->nama ?? '' }}@if(!$loop->last), @endif
                                 @endforeach
@@ -37,7 +37,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-2">
-                            <a href="{{ route('guru.edit', $guru->id) }}" class="inline-block bg-black-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded shadow">Edit</a>
+                            <a href="{{ route('edit.guru', $guru->id) }}" class="inline-block bg-black-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded shadow">Edit</a>
                             <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')

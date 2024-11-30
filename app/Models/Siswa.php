@@ -9,6 +9,10 @@ class Siswa extends Model
 
     protected $fillable = ['nama', 'nis', 'kelas_id'];
 
+    protected $rules = [
+        'nis' => 'required|integer',
+    ];
+
     protected $attributes = [
         'kelas_id' => null, 
     ];

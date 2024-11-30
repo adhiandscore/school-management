@@ -30,7 +30,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700 font-medium mb-2">Nomor Induk Siswa:</label>
-                        <input type="number" name="nis" placeholder="Nomor induk siswa"
+                        <input type="number" for="nis" name="nis" placeholder="Nomor induk siswa"
                             class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required>
                     </div>
@@ -69,31 +69,33 @@
         </div>
 
         <!-- Form Tambah Guru -->
-        <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4">Tambah Guru</h2>
-            <form action="{{ route('form.guru.store') }}" method="POST">
-                @csrf
-                <div>
-                    <label class="block text-gray-700 font-medium mb-2">Nama Guru:</label>
-                    <input type="text" name="nama"
-                        class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        required>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-medium mb-2">kelas yang diampu:</label>
-                    <select name="kelas_id"
-                            class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            required>
-                            @foreach($kelas as $kls)
-                                <option value="{{ $kls->id }}">{{ $kls->nama_kelas}}</option>
-                            @endforeach
-                        </select>
-                </div>
-                <button type="submit"
-                    class="w-full bg-indigo-500 text-white font-semibold py-2 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-4">Tambah
-                    Guru</button>
-            </form>
-        </div>
+        <form action="{{ route('form.guru.store') }}" method="POST">
+            @csrf
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2" for="nama">Nama Guru:</label>
+                <input type="text" name="nama" id="nama"
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-2" for="kelas_id">Kelas yang Diajar:</label>
+                <select name="kelas[]"
+                    class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    required>
+                    @foreach($kelas as $kls)
+                        <option value="{{ $kls->id }}">{{ $kls->nama_kelas}}</option>
+                    @endforeach
+                </select>
+            </div>
+
+
+
+            <button type="submit"
+                class="w-full bg-indigo-500 text-white font-semibold py-2 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-4">Tambah
+                Guru</button>
+        </form>
 
         @if(session('success'))
             <div class="bg-green-500 text-white p-4 rounded-lg mt-4">

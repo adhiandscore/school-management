@@ -19,11 +19,13 @@ class FormController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
+            'nis' => 'required|integer',
             'kelas_id' => 'required|exists:kelas,id',
         ]);
 
         Siswa::create([
             'nama' => $request->nama,
+            'nis' => $request->nis,
             'kelas_id' => $request->kelas_id,
         ]);
 

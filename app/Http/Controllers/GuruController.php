@@ -11,20 +11,20 @@ class GuruController extends Controller
     public function index()
     {
         // Mengambil semua data guru
-        $gurus = Guru::with('kelases')->get(); // Tambahkan eager loading untuk relasi 'kelases'
+        $gurus = Guru::with('gurus')->get(); // Tambahkan eager loading untuk relasi 'kelases'
         return view('guru.index', compact('gurus'));
     }
 
     public function edit(Guru $guru)
-    {
-        $guru->load('kelases');
-        return view('guru.edit', compact('guru'));
-    }
+{
+    $guru->load('kelases'); // Eager loading untuk data kelas
+    return view('guru.edit', compact('guru'));
+}
 
     public function update(Request $request, Guru $guru)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama' => 'required|string|max:255'. $guru->id
         ]);
 
         // Update data guru
@@ -35,7 +35,7 @@ class GuruController extends Controller
     public function destroy(Guru $guru)
     {
         // Pastikan semua relasi dihapus jika dibutuhkan
-        $guru->kelases()->detach(); // Hapus relasi dengan kelas sebelum menghapus guru
+        $guru->gurus()->detach(); // Hapus relasi dengan kelas sebelum menghapus guru
         $guru->delete();
         return redirect()->route('guru.index')->with('success', 'Data guru berhasil dihapus!');
     }

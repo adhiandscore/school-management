@@ -14,7 +14,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/siswa', SiswaController::class);
     Route::resource('/guru', GuruController::class);
-    Route::resource('/kelas', GuruController::class);
+    Route::get('/guru/{guru}/edit', [GuruController::class, 'edit'])->name('edit.guru');
+    Route::get('/guru/{guru}', action: [GuruController::class, 'update'])->name('guru.update');
+    Route::get('kelas', [KelasController::class, 'index'])->name('kelas.index');
 
     Route::prefix('kelas')->name('kelas.')->group(function () {
         Route::get('/', [KelasController::class, 'index'])->name('index');

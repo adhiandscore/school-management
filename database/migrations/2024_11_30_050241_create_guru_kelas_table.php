@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('siswas', function (Blueprint $table) {
-            $table->string('nis')->nullable()->change(); // Ubah jadi nullable
+        Schema::create('guru_kelas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('guru_id')->constrained('gurus');
+            $table->foreignId('kelas_id')->constrained('kelas');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('siswas', function (Blueprint $table) {
-            $table->string('nis')->nullable(false)->change(); // Kembalikan jadi NOT NULL
-        });
+        Schema::dropIfExists('guru_kelas');
     }
 };

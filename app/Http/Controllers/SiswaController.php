@@ -26,7 +26,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'nis' => 'required|string|max:50|unique:siswas,nis',
+            'nis' => 'required|integer|max:50',
             'kelas_id' => 'nullable|exists:kelas,id',
         ]);
 
