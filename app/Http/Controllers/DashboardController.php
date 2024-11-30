@@ -9,10 +9,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Mengambil data kelas beserta siswa dan guru yang terkait
-        $data = Kelas::with(['siswas', 'gurus'])->get();
+        try {
+            $data = Kelas::with(['siswas', 'gurus'])->get();
 
-        // Kirimkan data ke view 'dashboard.index'
-        return view('dashboard.index', compact('data'));
+            if ($data->isEmpty()) {
+                return view('dashboard.index', ['data' => [], 'message' => 'Tidak ada data kelas yang tersedia.']);
+            }
+
+            return view('dashboard.index', compact('data'));
+        } catch (\Exception $e) {
+            return redirect()->route('home')->withErrors('Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

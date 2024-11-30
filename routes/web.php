@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
@@ -8,39 +9,36 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\FormController;
 require __DIR__ . '/auth.php';
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('siswa', [SiswaController::class, 'index'])->name('siswa.index');
-Route::get('/siswa/edit/{id}', [SiswaController::class, 'edit'])->name('siswa.edit');
-Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
-
-Route::resource('guru', GuruController::class);
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('/siswa', SiswaController::class);
+    Route::resource('/guru', GuruController::class);
+    Route::resource('/kelas', GuruController::class);
 
-    Route::view('/admin', 'AdminDashboard')
-        ->middleware(['auth', 'verified'])
-        ->name('dashboard');
+    Route::prefix('kelas')->name('kelas.')->group(function () {
+        Route::get('/', [KelasController::class, 'index'])->name('index');
+        Route::get('/create', [KelasController::class, 'create'])->name('create');
+        Route::post('/', [KelasController::class, 'store'])->name('store');
+        Route::get('/{id}', [KelasController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [KelasController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [KelasController::class, 'update'])->name('update');
+        Route::delete('/{id}', [KelasController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::get('/admin', function () {
+        return redirect()->route('dashboard'); // Redirect to named route
+    })->middleware(['auth', 'verified']);
 
     Route::view('profile', 'profile')
         ->middleware(['auth'])
         ->name('profile');
 
-    Route::get('/kelas/{kelas}/siswas', [KelasController::class, 'showSiswas']);
-
-    Route::get('/kelas/gurus', [KelasController::class, 'showGurus']);
     Route::get('/form', [FormController::class, 'index'])->name('form.index');
     Route::post('/form/siswa', [FormController::class, 'storeSiswa'])->name('form.siswa.store');
     Route::post('/form/kelas', [FormController::class, 'storeKelas'])->name('form.kelas.store');
     Route::post('/form/guru', [FormController::class, 'storeGuru'])->name('form.guru.store');
 
-    // terima data dari index
 
-    //update data siswa
-    Route::put('/siswa/update/{id}', [SiswaController::class, 'update'])->name('siswa.update');
-
-    Route::put('/kelas/{id}', [KelasController::class, 'update'])->name('kelas.update');
-    // update data
-    // Rute untuk halaman edit siswa
-    Route::put('/guru/{id}', [GuruController::class, 'update'])->name('guru.update');
 });
 

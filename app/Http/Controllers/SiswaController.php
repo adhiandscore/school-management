@@ -11,54 +11,57 @@ class SiswaController extends Controller
     public function index()
     {
         $siswa = Siswa::with('kelas')->get(); // Mengambil data siswa beserta relasi kelas
-        // dd($siswa); // Debug data siswa
-        return view('dashboard.index', compact('siswa'));
+        return view('siswa.index', compact('siswa'));
     }
+
 
     public function create()
     {
-        $kelas = Kelas::all();
+        $kelas = Kelas::all(); // Ambil semua data kelas
         return view('siswa.create', compact('kelas'));
     }
 
+
     public function store(Request $request)
     {
-        Siswa::create($request->all());
-        return redirect()->route('siswa.index');
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'nis' => 'required|string|max:50|unique:siswas,nis',
+            'kelas_id' => 'nullable|exists:kelas,id',
+        ]);
+
+        Siswa::create($request->all()); // Simpan data siswa
+        return redirect()->route('siswa.index')->with('success', 'Siswa berhasil ditambahkan!');
     }
 
-    public function edit(Kelas $kelas)
+
+    public function edit($id)
     {
-        // dd($id);
-        $kelas = Siswa::findOrFail($kelas); // Pastikan ID valid
-        return view('siswa.edit');
+        $siswa = Siswa::findOrFail($id); // Ambil data siswa atau tampilkan 404
+        $kelas = Kelas::all(); // Ambil semua data kelas
+        return view('siswa.edit', compact('siswa', 'kelas'));
     }
+
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kelas' => 'required|string|max:10',
-            'alamat' => 'nullable|string',
+            'nis' => "required|string|max:50|unique:siswas,nis,$id", // Pastikan unik kecuali untuk ID saat ini
+            'kelas_id' => 'nullable|exists:kelas,id',
         ]);
 
-        // Cari data siswa
-        $siswa = Siswa::findOrFail($id);
+        $siswa = Siswa::findOrFail($id); // Ambil data siswa
+        $siswa->update($request->all()); // Update data siswa
 
-        // Update data siswa
-        $siswa->nama = $request->input('nama');
-        $siswa->nis = $request->input('nis');
-        $siswa->kelas = $request->input('kelas');
-        $siswa->save();
-        
-        // Redirect dengan pesan sukses
-    return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui!');
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui!');
     }
 
-    public function destroy(Siswa $siswa)
+    public function destroy($id)
     {
-        $siswa->delete();
-        return redirect()->route('siswa.index');
+        $siswa = Siswa::findOrFail($id); // Pastikan ID siswa valid
+        $siswa->delete(); // Hapus siswa
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus!');
     }
 
 }

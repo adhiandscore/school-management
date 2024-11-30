@@ -32,7 +32,7 @@
                         <label class="block text-gray-700 font-medium mb-2">Kelas:</label>
                         <select name="kelas_id" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                             @foreach($kelas as $kls)
-                                <option value="{{ $kls->id }}">{{ $kls->nama_kelas }}</option>
+                                <option value="{{ $kls->id }}">{{ $kls->nama_kelas}}</option>
                             @endforeach
                         </select>
                     </div>

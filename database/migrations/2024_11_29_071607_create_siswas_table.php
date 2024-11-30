@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id(); // Kolom primary key
-            $table->string('nama'); // Kolom lain di tabel kelas
+            $table->string('nama_kelas')->nullable(false); // Kolom lain di tabel kelas
             $table->timestamps();
         });
         
         Schema::create('siswas', function (Blueprint $table) {
             $table->id(); // Kolom primary key
-            $table->string('nama');
-            $table->string('nis');
+            $table->string('nama')->nullable(false);
+            $table->string('nis')->nullable(false);
             $table->foreignId('kelas_id')->constrained('kelas', 'id'); // Menambahkan kunci asing
             $table->timestamps();
         });
@@ -32,5 +32,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('siswas');
+        Schema::dropIfExists('kelas');
     }
 };

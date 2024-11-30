@@ -1,50 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto mt-8 px-4">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-white">Daftar Guru</h1>
-        <a href="{{ route('form.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
-            Tambah Guru
-        </a>
-    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Daftar Guru</h1>
 
-    <div class="bg-white shadow rounded-lg overflow-hidden">
-        @if ($gurus->isEmpty())
-            <div class="p-6 text-center text-gray-500">
-                <p>Belum ada data guru.</p>
-            </div>
-        @else
-            <table class="min-w-full table-auto border-collapse">
-                <thead class="bg-gray-50 border-b">
+            <!-- Tampilkan pesan sukses -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Tabel Data Guru -->
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-gray-600 font-medium">Nama</th>
-                        <th class="px-6 py-3 text-left text-gray-600 font-medium">Mata Pelajaran</th>
-                        <th class="px-6 py-3 text-center text-gray-600 font-medium">Aksi</th>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>Kelas yang Diampu</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y">
-                    @foreach ($gurus as $guru)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 text-gray-800">{{ $guru->nama }}</td>
-                            <td class="px-6 py-4 text-gray-800">{{ $guru->mata_pelajaran }}</td>
-                            <td class="px-6 py-4 text-center">
-                                <a href="{{ route('edit.guruEdit', $guru->id) }}" class="text-yellow-500 hover:text-yellow-600 mr-4">
-                                    Edit
-                                </a>
-                                <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                <tbody>
+                    @forelse($gurus as $guru)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $guru->nama??'' }}</td>
+                            <td>
+                                @if($guru->kelases->isNotEmpty())
+                                    @foreach($guru->kelases as $kelas)
+                                        {{ $kelas->nama ??''}}@if(!$loop->last), @endif
+                                    @endforeach
+                                @else
+                                    <em>Belum mengampu kelas</em>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-600">
-                                        Hapus
-                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak ada data guru.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
-        @endif
+
+            <!-- Tombol Tambah Guru -->
+            <a href="{{ route('guru.create') }}" class="btn btn-primary">Tambah Guru</a>
+        </div>
     </div>
 </div>
 @endsection

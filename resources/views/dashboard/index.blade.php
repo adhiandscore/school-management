@@ -35,25 +35,28 @@
 
         <!-- Daftar Kelas dan Data Terkait -->
         <div class="mt-8">
+
+       
             @foreach($data as $kelas)
                 <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
-                    <h2 class="text-2xl font-semibold mb-4">{{ $kelas->nama_kelas }}</h2>
+                    <h2 class="text-2xl font-semibold mb-4">{{ $kelas->nama_kelas ??'' }}</h2>
 
                     <h3 class="text-xl font-medium mb-2">Siswa:</h3>
                     <ul class="list-disc pl-5 mb-4">
                         @foreach($kelas->siswas as $siswa)
-                            <li class="text-gray-800">{{ $siswa->nama }} (NIS: {{ $siswa->nis }})</li>
+                            <li class="text-gray-800">{{ $siswa->nama ??''}} (NIS: {{ $siswa->nis??'' }})</li>
                         @endforeach
                     </ul>
 
                     <h3 class="text-xl font-medium mb-2">Guru:</h3>
                     <ul class="list-disc pl-5">
                         @foreach($kelas->gurus as $guru)
-                            <li class="text-gray-800">{{ $guru->nama }}</li>
+                            <li class="text-gray-800">{{ $guru->nama??'' }}</li>
                         @endforeach
                     </ul>
                 </div>
             @endforeach
+            
         </div>
     </div>
 

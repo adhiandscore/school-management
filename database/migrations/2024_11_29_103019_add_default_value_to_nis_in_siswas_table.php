@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
 {
     Schema::table('siswas', function (Blueprint $table) {
-        $table->string('nis')->default('000000')->change(); // Set default value
+        $table->string('nis')->nullable('000000')->change(); // Set default value
     });
 }
 

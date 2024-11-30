@@ -1,81 +1,51 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Daftar Siswa</h1>
 
-<!DOCTYPE html>
-<html lang="en">
+        @if(session('success'))
+            <div class="bg-green-500 text-white p-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Siswa</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+        <a href="{{ route('siswa.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4 inline-block">Tambah Siswa</a>
 
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
-
-
-    <div class="container mx-auto p-8">
-        <h1 class="text-4xl font-bold text-center mb-6">Daftar Siswa</h1>
-        <div class="flex justify-between items-center mb-6">
-
-            <a href="{{ route('form.index') }}"
-                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
-                Tambah murid
-            </a>
-        </div>
-
-        <!-- List Group untuk Menampilkan Siswa -->
-        <div class="bg-white shadow-md rounded-lg">
-            <ul class="divide-y divide-gray-200">
-                <div class="bg-white shadow rounded-lg overflow-hidden">
-                    @if ($siswa->isEmpty())
-                        <div class="p-6 text-center text-gray-500">
-                            <p>Belum ada data siswa.</p>
-                        </div>
-                    @else
-                        <table class="min-w-full table-auto border-collapse">
-                            <thead class="bg-gray-50 border-b">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-gray-600 font-medium">Absen</th>
-                                    <th class="px-6 py-3 text-left text-gray-600 font-medium">Nama</th>
-                                    <th class="px-6 py-3 text-left text-gray-600 font-medium">NIS</th>
-                                    <th class="px-6 py-3 text-center text-gray-600 font-medium">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y">
-                                @foreach ($siswa as $s)
-                                    <tr class="hover:bg-gray-50 transition">
-                                        <td class="px-6 py-4 text-gray-800">{{ $s->id }}</td>
-                                        <td class="px-6 py-4 text-gray-800">{{ $s->nama }}</td>
-                                        <td class="px-6 py-4 text-gray-800">{{ $s->nis }}</td>
-                                        <td class="px-6 py-4 text-gray-800">{{ $s->kelas->nama_kelas }}</td>
-                                        <td class="px-6 py-4 text-center">
-                                            <!-- Link untuk Edit -->
-                                            <a href="{{ route('siswa.edit', $s->id) }}" onclick="console.log('{{ $s->id }}')" class="btn btn-warning">Edit</a>
-
-                                            <!-- Formulir untuk Hapus -->
-                                            <form action="#" method="POST" class="inline-block"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-
-                            </tbody>
-                        </table>
-                    @endif
-
-            </ul>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded shadow-md">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 text-left">
+                        <th class="px-4 py-2 border-b">No</th>
+                        <th class="px-4 py-2 border-b">Nama</th>
+                        <th class="px-4 py-2 border-b">NIS</th>
+                        <th class="px-4 py-2 border-b">Kelas</th>
+                        <th class="px-4 py-2 border-b">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($siswa as $index => $item)
+                        <tr class="odd:bg-gray-50 even:bg-white">
+                            <td class="px-4 py-2 border-b">{{ $index + 1 }}</td>
+                            <td class="px-4 py-2 border-b">{{ $item->nama }}</td>
+                            <td class="px-4 py-2 border-b">{{ $item->nis }}</td>
+                            <td class="px-4 py-2 border-b">{{ $item->kelas->nama_kelas ?? '-' }}</td>
+                            <td class="px-4 py-2 border-b flex space-x-2">
+                                <a href="{{ route('siswa.edit', $item->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 text-sm">Edit</a>
+                                <form action="{{ route('siswa.destroy', $item->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-4 py-2 border-b text-center">Tidak ada data siswa</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
-
-</html>
 @endsection
