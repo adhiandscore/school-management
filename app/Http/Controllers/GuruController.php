@@ -11,7 +11,7 @@ class GuruController extends Controller
     public function index()
     {
         // Mengambil semua data guru
-        $gurus = Guru::with('gurus')->get(); // Tambahkan eager loading untuk relasi 'kelases'
+        $gurus = Guru::with(['kelases'])->get();
         return view('guru.index', compact('gurus'));
     }
 
